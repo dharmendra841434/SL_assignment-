@@ -1,0 +1,31 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  @font-face {
+    font-family: BeVietnam;
+    font-weight: 400;
+    src: url(/src/assets/fonts/BeVietnamPro-Regular.ttf) format('ttf');
+  }
+  @font-face {
+    font-family: BeVietnam;
+    font-weight: 500;
+    src: url(/src/assets/fonts/BeVietnamPro-Medium.ttf) format('ttf');
+  }
+  @font-face {
+    font-family: BeVietnam;
+    font-weight: 600;
+    src: url(/src/assets/fonts/BeVietnamPro-SemiBold.ttf) format('ttf');
+  }
+  @font-face {
+    font-family: BeVietnam;
+    font-weight: 700;
+    src: url(/src/assets/fonts/BeVietnamPro-Bold.ttf) format('ttf');
+  }
+  @font-face {
+    font-family: BeVietnam;
+    font-weight: 700;
+    src: url(/src/assets/fonts/BeVietnamPro-ExtraBold.ttf) format('ttf');
+  }
+}

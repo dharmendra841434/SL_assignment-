@@ -1,0 +1,75 @@
+export const indianStates = [
+  'Andhra Pradesh',
+  'Arunachal Pradesh',
+  'Assam',
+  'Bihar',
+  'Chhattisgarh',
+  'Goa',
+  'Gujarat',
+  'Haryana',
+  'Himachal Pradesh',
+  'Jharkhand',
+  'Karnataka',
+  'Kerala',
+  'Madhya Pradesh',
+  'Maharashtra',
+  'Manipur',
+  'Meghalaya',
+  'Mizoram',
+  'Nagaland',
+  'Odisha',
+  'Punjab',
+  'Rajasthan',
+  'Sikkim',
+  'Tamil Nadu',
+  'Telangana',
+  'Tripura',
+  'Uttar Pradesh',
+  'Uttarakhand',
+  'West Bengal',
+  'Andaman and Nicobar Islands',
+  'Chandigarh',
+  'Dadra and Nagar Haveli and Daman and Diu',
+  'Lakshadweep',
+  'Delhi',
+  'Puducherry',
+];
+export const daysOfWeek = ['M', 'T', 'W', 'Th', 'F', 'S', 'Su'];
+
+export const businessTimes = [
+  {
+    id: 1,
+    from: '8:00am',
+    to: '10:00am',
+  },
+  {
+    id: 2,
+    from: '10:00am',
+    to: '1:00pm',
+  },
+  {
+    id: 3,
+    from: '1:00pm',
+    to: '4:00pm',
+  },
+  {
+    id: 4,
+    from: '4:00pm',
+    to: '7:00pm',
+  },
+  {
+    id: 5,
+    from: '7:00pm',
+    to: '10:00pm',
+  },
+];
+
+export const weekDays = {
+  mon: ['8:00am - 10:00am', '10:00am - 1:00pm'],
+  tue: ['8:00am - 10:00am', '10:00am - 1:00pm'],
+  wed: ['8:00am - 10:00am', '10:00am - 1:00pm', '1:00pm - 4:00pm'],
+  thu: ['8:00am - 10:00am', '10:00am - 1:00pm', '1:00pm - 4:00pm'],
+  fri: ['8:00am - 10:00am', '10:00am - 1:00pm'],
+  sat: ['8:00am - 10:00am', '10:00am - 1:00pm'],
+  sun: ['8:00am -10:00am'],
+};
