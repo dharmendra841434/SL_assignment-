@@ -1,13 +1,12 @@
 import {
   View,
-  Text,
   StatusBar,
   StyleSheet,
   TouchableOpacity,
   Image,
   Alert,
 } from 'react-native';
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {appColors} from '../../utils/appColors';
 import CustomText from '../../components/CustomText';
 import {appFonts} from '../../utils/appFonts';
@@ -20,6 +19,19 @@ import CustomButton from '../../components/CustomButton';
 import {useNavigation} from '@react-navigation/native';
 import axios from 'axios';
 import {BASE_URL} from '../../utils/URL';
+import {
+  GoogleSignin,
+  statusCodes,
+} from '@react-native-google-signin/google-signin';
+import {
+  LoginButton,
+  AccessToken,
+  Settings,
+  LoginManager,
+  Profile,
+  GraphRequest,
+  GraphRequestManager,
+} from 'react-native-fbsdk-next';
 
 const LoginScreen = () => {
   const navigation = useNavigation();
@@ -68,6 +80,171 @@ const LoginScreen = () => {
         setLoader(false);
       });
   };
+
+  const handleGoogleLogin = async () => {
+    setLoader(true);
+    try {
+      await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signIn().then(async result => {
+        // console.log(result?.user);
+        await axios
+          .post(`${BASE_URL}/user/login`, {
+            email: result?.user?.email,
+            password: '',
+            role: 'farmer',
+            device_token: '0imfnc8mVLWwsAawjYr4Rx-Af50DDqtlx',
+            type: 'google',
+            social_id: '0imfnc8mVLWwsAawjYr4Rx-Af50DDqtlx',
+          })
+          .then(res => {
+            console.log(res.data);
+            setLoader(false);
+            if (!res?.data?.success) {
+              Alert.alert(
+                'Error ',
+                res?.data?.message,
+                [
+                  {
+                    text: 'Cancel',
+                    onPress: () => console.log('Cancel Pressed'),
+                    style: 'cancel',
+                  },
+                  {text: 'OK', onPress: () => console.log('OK Pressed')},
+                ],
+                {cancelable: false},
+              );
+            }
+            if (res?.data?.success) {
+              setEmail('');
+              setPassword('');
+              navigation.navigate('home');
+            }
+          })
+          .catch(error => {
+            console.log(error);
+            setLoader(false);
+          });
+      });
+    } catch (error) {
+      setLoader(false);
+      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+        alert('User cancelled the login flow !');
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        alert('Signin in progress');
+        // operation (f.e. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        alert('Google play services not available or outdated !');
+        // play services not available or outdated
+      } else {
+        console.log(error);
+      }
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    setLoader(true);
+    try {
+      const result = await LoginManager.logInWithPermissions([
+        'public_profile',
+        'email',
+      ]);
+      if (result.isCancelled) {
+        setLoader(false);
+        console.log('Login cancelled');
+      } else {
+        const accessToken = await AccessToken.getCurrentAccessToken();
+        if (accessToken) {
+          //console.log('Logged in successfully!', accessToken);
+          const requestParams = {
+            accessToken: accessToken.accessToken,
+            parameters: {
+              fields: {
+                string:
+                  'id,name,email,first_name,last_name,picture.type(large)',
+              },
+            },
+          };
+
+          const fetchRequest = new GraphRequest(
+            '/me',
+            requestParams,
+            async (error, result) => {
+              if (error) {
+                setLoader(false);
+                console.log('Error fetching email:', error);
+              } else {
+                console.log(result, 'fb res');
+                await axios
+                  .post(`${BASE_URL}/user/login`, {
+                    email: result?.email,
+                    password: '',
+                    role: 'farmer',
+                    device_token: '0imfnc8mVLWwsAawjYr4Rx-Af50DDqtlx',
+                    type: 'facebook',
+                    social_id: '0imfnc8mVLWwsAawjYr4Rx-Af50DDqtlx',
+                  })
+                  .then(res => {
+                    console.log(res.data);
+                    setLoader(false);
+                    if (!res?.data?.success) {
+                      Alert.alert(
+                        'Error ',
+                        res?.data?.message,
+                        [
+                          {
+                            text: 'Cancel',
+
+                            style: 'cancel',
+                          },
+                          {text: 'OK'},
+                        ],
+                        {cancelable: false},
+                      );
+                    }
+                    if (res?.data?.success) {
+                      setEmail('');
+                      setPassword('');
+                      navigation.navigate('home');
+                    }
+                  })
+                  .catch(error => {
+                    console.log(error);
+                    setLoader(false);
+                  });
+              }
+            },
+          );
+
+          new GraphRequestManager().addRequest(fetchRequest).start();
+
+          // Navigate to the next screen or perform any other action
+        } else {
+          setLoader(false);
+          console.log('Failed to get access token');
+        }
+      }
+    } catch (error) {
+      setLoader(false);
+      console.log('Error occurred while logging in:', error);
+    }
+  };
+
+  useEffect(() => {
+    Settings.setAppID('742274741030237');
+    Settings.initializeSDK();
+    let cfg = GoogleSignin.configure({
+      webClientId:
+        '878129512651-vseg43r8rmuequ1mrfke0a8147hvfqe5.apps.googleusercontent.com',
+      offlineAccess: true,
+    });
+
+    return () => {
+      cfg;
+    };
+  }, []);
+
   return (
     <View className="flex-1 px-3 bg-white ">
       <StatusBar barStyle="dark-content" backgroundColor={appColors.appWhite} />
@@ -128,7 +305,9 @@ const LoginScreen = () => {
           or login with
         </CustomText>
         <View className="flex-row items-center ">
-          <TouchableOpacity activeOpacity={0.6}>
+          <TouchableOpacity
+            onPress={() => handleGoogleLogin()}
+            activeOpacity={0.6}>
             <View className="items-center w-32 px-5 py-3 border border-gray-300 rounded-full ">
               <Image source={google} className="w-10 h-10 " />
             </View>
@@ -138,7 +317,9 @@ const LoginScreen = () => {
               <Image source={apple} className="w-10 h-10 " />
             </View>
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.6}>
+          <TouchableOpacity
+            onPress={() => handleFacebookLogin()}
+            activeOpacity={0.6}>
             <View className="items-center w-32 px-5 py-3 border border-gray-300 rounded-full ">
               <Image source={facebook} className="w-10 h-10 " />
             </View>

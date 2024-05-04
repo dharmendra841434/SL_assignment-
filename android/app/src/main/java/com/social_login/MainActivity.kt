@@ -1,7 +1,6 @@
-package com.softwerelab
+package com.social_login
 
 import android.os.Bundle;
-
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
 import com.facebook.react.defaults.DefaultNewArchitectureEntryPoint.fabricEnabled
@@ -13,9 +12,9 @@ class MainActivity : ReactActivity() {
    * Returns the name of the main component registered from JavaScript. This is used to schedule
    * rendering of the component.
    */
-  override fun getMainComponentName(): String = "softwerelab"
+  override fun getMainComponentName(): String = "Social_Login"
 
-   override fun onCreate(savedInstanceState: Bundle?) {
+  override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(null)
   }
 

@@ -1,6 +1,6 @@
-import React from 'react';
-import StackNavigation from './navigations/StackNavigation';
+import React, {useEffect} from 'react';
 import '../global.css';
+import StackNavigation from './navigations/StackNavigation';
 
 const App = () => {
   return <StackNavigation />;

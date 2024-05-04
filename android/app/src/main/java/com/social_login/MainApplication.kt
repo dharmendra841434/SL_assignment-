@@ -1,4 +1,4 @@
-package com.softwerelab
+package com.social_login
 
 import android.app.Application
 import com.facebook.react.PackageList
@@ -20,7 +20,7 @@ class MainApplication : Application(), ReactApplication {
             PackageList(this).packages.apply {
               // Packages that cannot be autolinked yet can be added manually here, for example:
               // add(MyReactNativePackage())
-              
+               VectorIconsPackage()
             }
 
         override fun getJSMainModuleName(): String = "index"

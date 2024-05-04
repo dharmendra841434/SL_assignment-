@@ -1,3 +1,9 @@
 <resources>
-    <string name="app_name">softwerelab</string>
+    <string name="app_name">SoftwereLab</string>
+    
+<string name="facebook_app_id">1223494852394627</string>
+<string name="fb_login_protocol_scheme">fb1234</string>
+<string name="facebook_client_token">1ffb6c51eead385ec4ed579d50de72a6</string>
+
+
 </resources>
