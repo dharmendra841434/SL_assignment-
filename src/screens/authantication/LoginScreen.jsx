@@ -85,6 +85,7 @@ const LoginScreen = () => {
     setLoader(true);
     try {
       await GoogleSignin.hasPlayServices();
+      await GoogleSignin.signOut();
       await GoogleSignin.signIn().then(async result => {
         // console.log(result?.user);
         await axios
