@@ -238,9 +238,9 @@ const LoginScreen = () => {
     let cfg = GoogleSignin.configure({
       webClientId:
         '878129512651-vseg43r8rmuequ1mrfke0a8147hvfqe5.apps.googleusercontent.com',
+      iosClientId:'878129512651-vseg43r8rmuequ1mrfke0a8147hvfqe5.apps.googleusercontent.com',
       offlineAccess: true,
     });
-
     return () => {
       cfg;
     };
